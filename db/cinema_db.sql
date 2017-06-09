@@ -5,8 +5,7 @@ DROP TABLE IF EXISTS movies;
 
 CREATE TABLE customers (
   id SERIAL4 PRIMARY KEY,
-  name VARCHAR(255),
-  wallet INT4
+  name VARCHAR(255)
 );
 
 CREATE TABLE movies (
