@@ -1,5 +1,6 @@
 require_relative('db/sql_runner.rb')
 
+
 class Customer 
 
   # attr_reader :id 
@@ -8,10 +9,11 @@ class Customer
   def initialize( options )
     @id = options['id'].to_i
     @name = options['name']
+    @wallet = options['wallet'].to_i
   end 
 
   def save()
-    sql = "INSERT INTO customers (name) VALUES ('#{ @name }') RETURNING id"
+    sql = "INSERT INTO customers (name, wallet) VALUES ('#{ @name }',' #{@wallet}') RETURNING id"
     user = SqlRunner.run( sql ).first
     @id = user['id'].to_i
   end
@@ -26,6 +28,8 @@ class Customer
     return self.get_many(sql)
   end 
 
+
+
   # handing out the error of wrong arguements given but the same code works with the movies the only diferece is the @ with the name field. 
 
   # def update
@@ -34,18 +38,18 @@ class Customer
   # end 
 
   def update 
-    sql = "UPDATE customers SET (name) = ('#{name}') WHERE id = #{@id};"
+    sql = "UPDATE customers SET (name, wallet) = ('#{name}',' #{@wallet}') WHERE id = #{@id};"
     SqlRunner.run(sql)
   end
 
 
-    def movies()
-      sql = "SELECT movies.* FROM movies
-INNER JOIN tickets ON tickets.movie_id = movies.id WHERE customer_id = #{@id};"
-      movies_hash = SqlRunner.run(sql)
-      result = movies_hash.map { |movie| Movie.new(movie)}
-      return result 
-    end 
+  def movies()
+    sql = "SELECT movies.* FROM movies
+    INNER JOIN tickets ON tickets.movie_id = movies.id WHERE customer_id = #{@id};"
+    movies_hash = SqlRunner.run(sql)
+    result = movies_hash.map { |movie| Movie.new(movie)}
+    return result 
+  end 
 
 
   def self.get_many(sql)

@@ -14,11 +14,18 @@ class Ticket
     @movie_id = options['movie_id'].to_i
   end 
 
-  def save()
+  def save(customer,movie)
+    # wallet = customer.wallet
+    # movie_price = movie.price.to_i
+    if customer.wallet < movie.price.to_i 
+      return "can't continue"
+    else customer.wallet -= movie.price.to_i
     sql = "INSERT INTO tickets (customer_id, movie_id) VALUES ('#{ @customer_id }', '#{@movie_id}') RETURNING id"
     ticket = SqlRunner.run( sql ).first
     @id = ticket['id'].to_i
+    customer.update
   end
+end 
 
   def self.delete_all()
     sql = "DELETE FROM tickets"
