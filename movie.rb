@@ -19,6 +19,20 @@ class Movie
     @id = movie['id'].to_i
   end
 
+  def update 
+    sql = "UPDATE movies SET (title) = ('#{@title}') WHERE id = #{@id};"
+    SqlRunner.run(sql)
+  end
+
+  def customers()
+    sql = "SELECT customers.* FROM customers
+INNER JOIN tickets ON tickets.customer_id = customers.id WHERE movie_id = #{@id};"
+    customer_hash = SqlRunner.run(sql)
+    result = customer_hash.map { |customer| Customer.new(customer)}
+    return result 
+  end 
+
+
   def self.all 
     sql = "SELECT * FROM movies"
     return self.get_many(sql)
@@ -36,6 +50,8 @@ class Movie
     result = movies_hash.map {|movie| Movie.new( movie ) }
     return result 
   end 
+
+
 
 
 

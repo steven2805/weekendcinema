@@ -26,10 +26,14 @@ class Customer
     return self.get_many(sql)
   end 
 
-  def self.update
-    sql = "UPDATE customers SET (name) = ('#{@name}'') WHERE id = #{@id};"
-    SqlRunner.new(sql)
-  end 
+  # def update
+  #   sql = "UPDATE customers SET (name) = ('#{@name}') WHERE id = #{@id};"
+  #   SqlRunner.new(sql) 
+  # end 
+  def update 
+    sql = "UPDATE customers SET (name) = ('#{name}') WHERE id = #{@id};"
+    SqlRunner.run(sql)
+  end
 
 
   def self.get_many(sql)
