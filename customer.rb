@@ -26,14 +26,26 @@ class Customer
     return self.get_many(sql)
   end 
 
+  # handing out the error of wrong arguements given but the same code works with the movies the only diferece is the @ with the name field. 
+
   # def update
   #   sql = "UPDATE customers SET (name) = ('#{@name}') WHERE id = #{@id};"
   #   SqlRunner.new(sql) 
   # end 
+
   def update 
     sql = "UPDATE customers SET (name) = ('#{name}') WHERE id = #{@id};"
     SqlRunner.run(sql)
   end
+
+
+    def movies()
+      sql = "SELECT movies.* FROM movies
+INNER JOIN tickets ON tickets.movie_id = movies.id WHERE customer_id = #{@id};"
+      movies_hash = SqlRunner.run(sql)
+      result = movies_hash.map { |movie| Movie.new(movie)}
+      return result 
+    end 
 
 
   def self.get_many(sql)
