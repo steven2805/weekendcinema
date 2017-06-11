@@ -15,10 +15,8 @@ class Ticket
   end 
 
   def save(customer,movie)
-    # wallet = customer.wallet
-    # movie_price = movie.price.to_i
     if customer.wallet < movie.price.to_i 
-      return "can't continue"
+      return 
     else customer.wallet -= movie.price.to_i
     sql = "INSERT INTO tickets (customer_id, movie_id) VALUES ('#{ @customer_id }', '#{@movie_id}') RETURNING id"
     ticket = SqlRunner.run( sql ).first
@@ -30,6 +28,19 @@ end
   def self.delete_all()
     sql = "DELETE FROM tickets"
     SqlRunner.run(sql)
+  end 
+
+
+  def self.all 
+    sql = "SELECT * FROM tickets"
+    return self.get_many(sql)
+  end 
+
+
+  def self.get_many(sql)
+    tickets_hash = SqlRunner.run(sql)
+    result = tickets_hash.map {|ticket| Ticket.new( ticket ) }
+    return result 
   end 
 
 

@@ -3,12 +3,13 @@ require_relative('db/sql_runner.rb')
 class Movie 
 
   attr_reader :id
-  attr_accessor :title, :price 
+  attr_accessor :title, :price
 
   def initialize(options)
     @id = options['id'].to_i
     @title = options['title']
     @price = options['price']
+    # @show_time = options['show_time']
 
   end
 
